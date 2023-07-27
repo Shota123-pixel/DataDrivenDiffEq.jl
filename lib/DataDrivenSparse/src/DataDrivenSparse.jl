@@ -67,12 +67,25 @@ _zero!(x::AbstractSparseRegressionCache) = begin
     return
 end
 
+#=
 function _is_converged(x::AbstractSparseRegressionCache, abstol, reltol)::Bool
     @unpack X, X_prev, active_set = x
     !(any(active_set)) && return true
     Δ = norm(X .- X_prev)
     Δ < abstol && return true
     δ = Δ / norm(X)
+    δ < reltol && return true
+    return false
+end
+=#
+
+#brd足したよ
+function _is_converged(x::AbstractSparseRegressionCache, abstol, reltol)::Bool
+    @unpack X, X_prev, active_set = x
+    !(any(active_set)) && return true
+    Δ = norm(brd.(X) .- brd.(X_prev))
+    Δ < abstol && return true
+    δ = Δ / norm(brd.(X))
     δ < reltol && return true
     return false
 end
