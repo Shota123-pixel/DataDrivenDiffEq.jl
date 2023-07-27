@@ -35,23 +35,23 @@ function brn(x)
 end
 
 
-#=
+
 #ここを変えたよ
 function _set!(x::AbstractSparseRegressionCache,
                y::AbstractSparseRegressionCache) where {T <: Number}
     begin
         foreach(eachindex(x.X)) do i
-            x.X[i] = brd.(y.X[i])
-            x.X_prev[i] = brd.(y.X_prev[i])
-            x.active_set[i] = brd.(y.active_set[i])
+            x.X[i] = (brd.(y.X[i])./2pi).+floor.(y.X[i]./(2pi)).*2pi
+            x.X_prev[i] = (brd.(y.X_prev[i])./2pi).+floor.(y.X_prev[i]./(2pi)).*2pi
+            x.active_set[i] = (brd.(y.active_set[i])./2pi).+floor.(y.active_set[i]./(2pi)).*2pi
         end
         return
     end
 end
-=#
 
 
-
+# cleanな状態
+#=
 function _set!(x::AbstractSparseRegressionCache,
                y::AbstractSparseRegressionCache) where {T <: Number}
     begin
@@ -63,6 +63,7 @@ function _set!(x::AbstractSparseRegressionCache,
         return
     end
 end
+=#
 
 
 _zero!(x::AbstractSparseRegressionCache) = begin
@@ -70,6 +71,7 @@ _zero!(x::AbstractSparseRegressionCache) = begin
     return
 end
 
+# cleanな状態
 
 function _is_converged(x::AbstractSparseRegressionCache, abstol, reltol)::Bool
     @unpack X, X_prev, active_set = x
