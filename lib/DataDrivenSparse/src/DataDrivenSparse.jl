@@ -35,7 +35,7 @@ function brn(x)
 end
 
 
-
+#=
 #ここを変えたよ
 function _set!(x::AbstractSparseRegressionCache,
                y::AbstractSparseRegressionCache) where {T <: Number}
@@ -48,9 +48,10 @@ function _set!(x::AbstractSparseRegressionCache,
         return
     end
 end
+=#
 
 
-#=
+
 function _set!(x::AbstractSparseRegressionCache,
                y::AbstractSparseRegressionCache) where {T <: Number}
     begin
@@ -62,14 +63,14 @@ function _set!(x::AbstractSparseRegressionCache,
         return
     end
 end
-=#
+
 
 _zero!(x::AbstractSparseRegressionCache) = begin
     x.X .= zero(eltype(x.X))
     return
 end
 
-#=
+
 function _is_converged(x::AbstractSparseRegressionCache, abstol, reltol)::Bool
     @unpack X, X_prev, active_set = x
     !(any(active_set)) && return true
@@ -79,8 +80,9 @@ function _is_converged(x::AbstractSparseRegressionCache, abstol, reltol)::Bool
     δ < reltol && return true
     return false
 end
-=#
 
+
+#=
 #brd足したよ
 function _is_converged(x::AbstractSparseRegressionCache, abstol, reltol)::Bool
     @unpack X, X_prev, active_set = x
@@ -91,6 +93,7 @@ function _is_converged(x::AbstractSparseRegressionCache, abstol, reltol)::Bool
     δ < reltol && return true
     return false
 end
+=#
 
 # StatsBase Overload
 StatsBase.coef(x::AbstractSparseRegressionCache) = getfield(x, :X)
