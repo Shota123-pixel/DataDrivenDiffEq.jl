@@ -35,7 +35,7 @@ function brn(x)
 end
 
 
-#=
+
 #ここを変えたよ
 function _set!(x::AbstractSparseRegressionCache,
                y::AbstractSparseRegressionCache) where {T <: Number}
@@ -48,8 +48,9 @@ function _set!(x::AbstractSparseRegressionCache,
         return
     end
 end
-=#
 
+
+#=
 function _set!(x::AbstractSparseRegressionCache,
                y::AbstractSparseRegressionCache) where {T <: Number}
     begin
@@ -61,6 +62,7 @@ function _set!(x::AbstractSparseRegressionCache,
         return
     end
 end
+=#
 
 _zero!(x::AbstractSparseRegressionCache) = begin
     x.X .= zero(eltype(x.X))
