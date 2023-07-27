@@ -25,7 +25,7 @@ abstract type AbstractProximalOperator end
 
 abstract type AbstractSparseRegressionCache <: StatsBase.StatisticalModel end
 
-#=
+
 # 加えたよ
 function brd(x)
     return mod(x, 2pi)
@@ -34,9 +34,9 @@ end
 function brn(x)
     return mod(x, 2pi) - 2pi * (mod(x, 2pi) > pi)
 end
-=#
 
-#=
+
+
 #ここを変えたよ
 function _set!(x::AbstractSparseRegressionCache,
                y::AbstractSparseRegressionCache) where {T <: Number}
@@ -49,8 +49,8 @@ function _set!(x::AbstractSparseRegressionCache,
         return
     end
 end
-=#
 
+#=
 # cleanな状態
 
 function _set!(x::AbstractSparseRegressionCache,
@@ -64,7 +64,7 @@ function _set!(x::AbstractSparseRegressionCache,
         return
     end
 end
-
+=#
 
 
 _zero!(x::AbstractSparseRegressionCache) = begin
@@ -145,7 +145,10 @@ function (x::X where {X <: AbstractSparseRegressionAlgorithm})(X, Y;
                                                                options::DataDrivenCommonOptions = DataDrivenCommonOptions(),
                                                                kwargs...)
     solver = SparseLinearSolver(x, options = options)
-    results = solver(X, Y) # Keep this here for now
+    # cleanな状態
+    #results = solver(X, Y) # Keep this here for now
+
+    results = solver(brd.(X), brd.(Y)) # Keep this here for now
 
     coeff_matrix = zeros(eltype(X), size(Y, 1), size(X, 1))
     optimal_thresholds = []
