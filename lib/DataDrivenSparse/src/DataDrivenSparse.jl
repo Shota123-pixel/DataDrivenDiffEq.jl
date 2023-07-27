@@ -35,6 +35,7 @@ function brn(x)
 end
 
 
+#=
 #ここを変えたよ
 function _set!(x::AbstractSparseRegressionCache,
                y::AbstractSparseRegressionCache) where {T <: Number}
@@ -43,6 +44,19 @@ function _set!(x::AbstractSparseRegressionCache,
             x.X[i] = brd.(y.X[i])
             x.X_prev[i] = brd.(y.X_prev[i])
             x.active_set[i] = brd.(y.active_set[i])
+        end
+        return
+    end
+end
+=#
+
+function _set!(x::AbstractSparseRegressionCache,
+               y::AbstractSparseRegressionCache) where {T <: Number}
+    begin
+        foreach(eachindex(x.X)) do i
+            x.X[i] = y.X[i]
+            x.X_prev[i] = y.X_prev[i]
+            x.active_set[i] = y.active_set[i]
         end
         return
     end
