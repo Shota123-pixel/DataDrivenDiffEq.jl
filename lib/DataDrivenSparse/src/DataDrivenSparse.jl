@@ -25,15 +25,24 @@ abstract type AbstractProximalOperator end
 
 abstract type AbstractSparseRegressionCache <: StatsBase.StatisticalModel end
 
+# 加えたよ
+function brd(x)
+    return mod(x, 2pi)
+end
+
+function brn(x)
+    return mod(x, 2pi) - 2pi * (mod(x, 2pi) > pi)
+end
+
 
 #ここを変えたよ
 function _set!(x::AbstractSparseRegressionCache,
                y::AbstractSparseRegressionCache) where {T <: Number}
     begin
         foreach(eachindex(x.X)) do i
-            x.X[i] = rem2pi.(y.X[i])
-            x.X_prev[i] = rem2pi.(y.X_prev[i])
-            x.active_set[i] = rem2pi.(y.active_set[i])
+            x.X[i] = brd.(y.X[i])
+            x.X_prev[i] = brd.(y.X_prev[i])
+            x.active_set[i] = brd.(y.active_set[i])
         end
         return
     end
