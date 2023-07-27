@@ -97,8 +97,8 @@ end
 function step!(cache::STLSQCache, λ::T) where {T}
     @unpack X, X_prev, active_set, proximal = cache
 
-    X_prev .= X .* 100
-    #X_prev .= X 
+    #X_prev .= X .* 100
+    X_prev .= X 
 
     step!(cache)
 
